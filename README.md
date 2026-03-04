@@ -70,3 +70,141 @@ public class Calc{
       }
     }
 ```
+
+## Item2d.java
+```java
+package ex01;
+
+import java.io.Serializable;
+
+public class Item2d implements Serializable{
+    private transient int length_rows;
+    private String x;
+    private int y;
+    private static final long serialVersionUID = 1L;
+    public Item2d(){
+        x = "";
+        y = 0;
+        length_rows = 0;
+    } 
+     public Item2d(String x, int y){
+        this.x= x;
+        this.y =y;
+        this.length_rows = x.length();
+    } 
+    public void setX(String x){
+        this.x = x;
+        this.length_rows = x.length();
+    }
+    public String getX(){
+        return x;
+    }
+    public void setY(int y){
+       this.y = y;
+    }
+    public int getY(){
+        return y;
+    }
+    public Item2d setXY(String x, int y){
+        this.x = x;
+        this.y = y;
+        this.length_rows = x.length();
+        return this;
+    }
+    public String toString(){
+        return "Rows: " + x + "\nk: " + y + "\nLenght: " + length_rows;
+    }
+    public boolean equals(Object obj){
+        if(this ==obj)
+            return true;
+        if(obj==null)
+            return false;
+        if(getClass()!=obj.getClass())
+            return false;
+        Item2d other = (Item2d) obj;
+        if(y != other.y)
+            return false;
+        if(!x.equals(other.x))
+            return false;
+
+        return true;
+    }
+}
+```
+## Main.java
+``` java
+package ex01;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+public class Main{
+    private Calc calc = new Calc();
+    private void menu(){
+        String s = null;
+        BufferedReader in = new BufferedReader(new InputStreamReader (System.in));
+        do{
+            do{
+                System.out.println("Enter command...");
+                System.out.print("'q'uit, 'v'iew, 'e'nter, 's'ave, 'r'estore: ");
+                try{
+                    s = in.readLine();
+                }
+                catch(IOException e){
+                    System.out.println("Error: "+ e);
+                    System.exit(0);
+                }
+            }
+            while (s.length() !=1);
+            switch (s.charAt(0)) {
+                case 'q':
+                    System.out.println("Exit.");
+                    break;
+                case 'v':
+                    System.out.println("View current.");
+                    calc.show();
+                    break;
+                case 'e':
+                    System.out.print("Enter rows: ");
+                    try{
+                    String x = in.readLine();
+                    calc.init(x);
+                    calc.show();
+                    }
+                     catch (IOException e){
+                        System.out.print("Input error: " + e);
+                     }
+                    break;
+                case 's':
+                    System.out.println("Save current.");
+                    try{
+                        calc.save();
+                    }
+                    catch (IOException e){
+                        System.out.println("Serializaton error: " + e);
+                    }
+                    calc.show();
+                    break;
+                case 'r':
+                    System.out.println("Restore last saved");
+                    try{
+                        calc.restore();
+                    }
+                    catch(Exception e){
+                     System.out.println("Serialization error: "+ e);
+                    }
+                    calc.show();
+                    break;
+                    default:
+                    System.out.print("Wrong command. ");
+            }
+        } 
+        while(s.charAt(0)!= 'q');
+    }
+    public static void main(String[] args){
+        Main main = new Main();
+        main.menu();
+    }
+}
+```
