@@ -251,8 +251,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+     /**
+     * Виконання обчислень та відображення результатів.
+     * Містить реалізацію статичного методу {@link Main#main(String[])}.
+     * @author Левковська Марія
+     * @version 1.0
+     * @see Main#main(String[])
+     */
 public class Main{
+    /** Об'єкт класу {@linkplain Calc}. Вирішує задачу індивідуального завдання*/
     private Calc calc = new Calc();
+   
+    /** Відображає меню */
     private void menu(){
         String s = null;
         BufferedReader in = new BufferedReader(new InputStreamReader (System.in));
@@ -314,6 +324,12 @@ public class Main{
         } 
         while(s.charAt(0)!= 'q');
     }
+    /**
+     * Виконується при запуску програми.
+     * Забезпечує роботу діалогового меню для введення рядка,підрахунку кількості голосних літер
+     * збереження та відновлення результатів серіалізації.
+     * @param args параметри командного рядка
+     */
     public static void main(String[] args){
         Main main = new Main();
         main.menu();
