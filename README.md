@@ -14,10 +14,10 @@
 4. індивідуальне завдання
    * Виконати індивідуальне завдання згідно номеру в списку. 12 варіант
 
-## СТруктура проекту
+## Структура проекту
 ![Структура проекту](https://github.com/kachka16/OOP/blob/task-2/PR2/img/structura.png?raw=true)
 
-## Calc.java
+### Calc.java
 ```java
 package ex01;
 
@@ -114,7 +114,7 @@ public class Calc{
 
 ```
 
-## Item2d.java
+### Item2d.java
 ```java
 package ex01;
 import java.io.Serializable;
@@ -243,7 +243,7 @@ public class Item2d implements Serializable{
     }
 }
 ```
-## Main.java
+### Main.java
 ``` java
 package ex01;
 
@@ -337,7 +337,7 @@ public class Main{
 }
 ```
 
-## MainTest.java
+### MainTest.java
 
 ``` java
 package ex01;
