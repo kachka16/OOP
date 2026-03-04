@@ -53,4 +53,4 @@ public class Program{
 
 ##### Приклад виконання
 
-![Приклад виконання 1](C:\Java\OOP\PR1\img\result.png)
+![Приклад виконання 1](C:/Java/OOP/PR1/img/result.png)
