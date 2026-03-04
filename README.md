@@ -264,3 +264,6 @@ public class MainTest{
     }
 }
 ```
+## Скріншот виконання
+![Приклад1](https://github.com/kachka16/OOP/blob/task-2/PR2/img/priklad1.png?raw=true)
+![Приклад2](https://github.com/kachka16/OOP/blob/task-2/PR2/img/priklad2.png?raw=true)
