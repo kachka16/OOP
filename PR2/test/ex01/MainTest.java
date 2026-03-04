@@ -5,7 +5,14 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import junit.framework.Assert;
 
+/**
+ * Виконує тестування розроблених класів.
+ * @author Левковська Марія
+ * @version 1.0
+ */
 public class MainTest{
+    
+    /** Перевірка основної функціональності класу {@linkplain Calc}*/
     @Test
     public void testCalc(){
         Calc calc = new Calc();
@@ -19,6 +26,8 @@ public class MainTest{
         assertEquals(0, calc.getResult().getY());
         
     }
+    
+    /** Перевірка серіалізації. Коректність відновлення даних. */
     @Test
     public void testRestore(){
         Calc calc = new Calc();
