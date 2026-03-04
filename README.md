@@ -14,6 +14,9 @@
 4. індивідуальне завдання
    * Виконати індивідуальне завдання згідно номеру в списку. 12 варіант
 
+## СТруктура проекту
+![Структура проекту](https://github.com/kachka16/OOP/blob/task-2/PR2/img/structura.png?raw=true)
+
 ## Calc.java
 ```java
 package ex01;
