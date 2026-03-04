@@ -50,6 +50,7 @@ public class Program{
     }
 }
 ```
+
 ##### Приклад виконання
 
-![Приклад виконання 1](/PR1/img/resuln.png)
+![Приклад виконання 1](C:\Java\OOP\PR1\img\result.png)
