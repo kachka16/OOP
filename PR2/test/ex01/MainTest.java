@@ -2,11 +2,8 @@ package ex01;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import junit.framework.Assert;
-
-import java.beans.Transient;
 import java.io.IOException;
-import ex01.Calc;
+import junit.framework.Assert;
 
 public class MainTest{
     @Test

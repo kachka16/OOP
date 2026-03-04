@@ -11,8 +11,8 @@ public class Main{
         BufferedReader in = new BufferedReader(new InputStreamReader (System.in));
         do{
             do{
-                System.out.println("ENter command...");
-                System.out.print("'q'uit, 'v'iew, 'g'enerate, 's'ave, 'r'estore: ");
+                System.out.println("Enter command...");
+                System.out.print("'q'uit, 'v'iew, 'e'nter, 's'ave, 'r'estore: ");
                 try{
                     s = in.readLine();
                 }
@@ -26,12 +26,12 @@ public class Main{
                 case 'q':
                     System.out.println("Exit.");
                     break;
-                    case 'v':
+                case 'v':
                     System.out.println("View current.");
                     calc.show();
                     break;
-                case 'g':
-                    System.out.println("Enter rows.");
+                case 'e':
+                    System.out.print("Enter rows: ");
                     try{
                     String x = in.readLine();
                     calc.init(x);
@@ -51,7 +51,17 @@ public class Main{
                     }
                     calc.show();
                     break;
-                default:
+                case 'r':
+                    System.out.println("Restore last saved");
+                    try{
+                        calc.restore();
+                    }
+                    catch(Exception e){
+                     System.out.println("Serialization error: "+ e);
+                    }
+                    calc.show();
+                    break;
+                    default:
                     System.out.print("Wrong command. ");
             }
         } 

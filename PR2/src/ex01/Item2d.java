@@ -3,19 +3,23 @@ package ex01;
 import java.io.Serializable;
 
 public class Item2d implements Serializable{
+    private transient int length_rows;
     private String x;
     private int y;
     private static final long serialVersionUID = 1L;
     public Item2d(){
         x = "";
         y = 0;
+        length_rows = 0;
     } 
      public Item2d(String x, int y){
         this.x= x;
         this.y =y;
+        this.length_rows = x.length();
     } 
     public void setX(String x){
         this.x = x;
+        this.length_rows = x.length();
     }
     public String getX(){
         return x;
@@ -29,10 +33,11 @@ public class Item2d implements Serializable{
     public Item2d setXY(String x, int y){
         this.x = x;
         this.y = y;
+        this.length_rows = x.length();
         return this;
     }
     public String toString(){
-        return "Rows= " + x + "\nk= " + y;
+        return "Rows: " + x + "\nk: " + y + "\nLenght: " + length_rows;
     }
     public boolean equals(Object obj){
         if(this ==obj)
