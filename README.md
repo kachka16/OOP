@@ -51,7 +51,7 @@ public class Program{
 }
 ```
 
-## Скріншот виконання
+## 📷Скріншот виконання
 
 ![Приклад виконання 1](https://github.com/kachka16/OOP/blob/task-1/PR1/img/result.png?raw=true)
 )
