@@ -126,8 +126,7 @@ package ex02;
 
 import java.io.IOException;
 
-    /** Product
-    * (шаблон проектування Factory Method)
+    /** Product(шаблон проектування Factory Method)
     * Інтерфейс "фабрикованих" об'єктів
     * Оголошує методи відображення результатів обчислень
     * @author Левковська Марія
@@ -161,7 +160,7 @@ public interface View {
 ``` java
 package ex02;
 
-    /**СТворення (шаблону проектування Factory Method)
+    /**Creator(шаблону проектування Factory Method)
      * Оголошує метод, що "фабрикує" об'єкти
      * @author Левковська Марія
      * @version 1.0
@@ -172,6 +171,27 @@ public interface Viewable {
     /** Створює об'єкт, що реалізує {@linkplain View} */
     public View getView();
     
+}
+```
+### ViewableResult.java
+``` java
+package ex02;
+
+    /** ConcreteCreator (шаблон проектування Factory Method)
+     * Реалізує метод, що "фабрикує" об'єкти
+     * @author Левковська Марія
+     * @version 1.0
+     * @see Viewable
+     * @see ViewableResult#getView()
+     */
+
+public class ViewableResult implements Viewable {
+    
+    /** Створює об'єкт відображення {@linkplain ViewResult} */
+    @Override
+    public View getView(){
+        return new ViewResult();
+    }
 }
 ```
 
