@@ -157,6 +157,24 @@ public interface View {
 }
 ```
 
+### Viewable.java
+``` java
+package ex02;
+
+    /**СТворення (шаблону проектування Factory Method)
+     * Оголошує метод, що "фабрикує" об'єкти
+     * @author Левковська Марія
+     * @version 1.0
+     * @see Viewable#getView()
+     */
+
+public interface Viewable {
+    /** Створює об'єкт, що реалізує {@linkplain View} */
+    public View getView();
+    
+}
+```
+
 ### Item2d.java(зміни в оформленні)
 ``` java
 package ex01;
