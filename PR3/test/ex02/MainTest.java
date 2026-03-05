@@ -5,16 +5,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import junit.framework.Assert;
 import java.io.IOException;
-import ex01.Item2d;
 
-/**
- * Виконує тестування розроблених класів.
- * @author Левковська Марія
- * @version 1.0
- */
+    /**
+     * Виконує тестування розроблених класів.
+     * @author Левковська Марія
+     * @version 1.0
+     */
 public class MainTest{
     
-    /** Перевірка основної функціональності класу {@linkplain Calc}*/
+    /** Перевірка основної функціональності класу {@linkplain ViewResult} */
     @Test
     public void testCalc(){
         ViewResult view = new ViewResult(3);
@@ -22,14 +21,14 @@ public class MainTest{
         assertEquals(2, view.getItems().get(0).getY());
 
         view.init("Eye");
-        assertEquals(3, view.getItems().get(1).getY());
+        assertEquals(3, view.getItems().get(0).getY());
 
         view.init("TV");
-        assertEquals(0, view.getItems().get(2).getY());
+        assertEquals(0, view.getItems().get(0).getY());
         
     }
     
-    /** Перевірка серіалізації. Коректність відновлення даних. */
+    /** Перевірка серіалізації. Коректність відновлення даних */
     @Test
     public void testRestore(){
         ViewResult view1 = new ViewResult();
