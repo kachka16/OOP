@@ -83,7 +83,7 @@ public class ViewResult implements View {
     /** Реалізація {@link View#viewHeader()}*/
     @Override
     public void viewHeader(){
-        System.out.println("\t \tResults: ");
+        System.out.println("Results: ");
     }
 
     /** Реалізація {@link View#viewBody()} */
@@ -96,7 +96,7 @@ public class ViewResult implements View {
     /** Реалізація {@link View#viewFooter()} */
     @Override
     public void viewFooter(){
-        System.out.println("----------------------------------------------------\n \t\tEND");
+        System.out.println("End.");
     }
 
 

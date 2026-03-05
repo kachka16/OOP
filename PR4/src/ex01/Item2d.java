@@ -99,7 +99,7 @@ public class Item2d implements Serializable{
      */
         @Override
     public String toString(){
-        return "----------------------------------------------------\nRows: " + x + "\nk: " + y + "\nLenght: " + length_rows ;
+        return "Rows: " + x + "\nk: " + y + "\nLenght: " + length_rows ;
         
     }
     
