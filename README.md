@@ -20,7 +20,7 @@
 ![Структура проекту](https://github.com/kachka16/OOP/blob/task-3/PR3/img/structura.png?raw=true)
 
 ### Main.java
-```
+``` java
 package ex02;
 
 import java.io.BufferedReader;
