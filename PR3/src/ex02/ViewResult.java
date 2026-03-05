@@ -7,56 +7,62 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import ex01.Item2d;
+import ex01.Calc;
+
+    /** ConcreteProduct (шаблон проектування Factory Method)
+     * Виконує обчислення, збереження та відображення результатів
+     * @author Левковська Марія
+     * @version 1.0
+     * @see View*/
 
 public class ViewResult implements View {
-
+    /** Ім'я файлу для серіалізації */
     private static final String FNAME = "items.bin";
+    /** Колекція результатів обчислень */
     private ArrayList<Item2d> items = new ArrayList<Item2d>();
+    /** Кількість елементів за замовчуванням */
     private static final int DEFAULT_NUM = 1;
-
+     /** Конструктор за замовчуванням */
     public ViewResult(){
         this(DEFAULT_NUM);
     }
+
+    /** Ініціалізує колекцію @param n кількість елементів*/
     public ViewResult(int n){
         for( int i = 0; i<n; i++){
             items.add(new Item2d());
         }
     }
 
+    /** Отримати колекцію результатів
+     * @return список {@link Item2d}*/
     public ArrayList<Item2d> getItems(){
          return items;
     }
 
-    public int calc(String rows){
-    char[] litters_golosni = {'a','A','U','u','E','e','O','o','Y','y','i','I'};
-    int k = 0;
-     for(char r : rows.toCharArray()){
-        for( char l : litters_golosni)
-            if(r == l){
-                k++;
-            }
-      }
-     return k;
-    }
-
+    /** Ініціалізує результати обчислень
+     * Рядок розбивається на слова, для кожного слова обчислюється кількість голосних за допомогою методу {@linkplain Calc#calc(String)} - item.setY(Calc.calc(w));
+     * @param rows рядок слів для обробки
+     */
     public void init(String rows){
         items.clear();
         String[] word = rows.split(" ");
         for(String w : word){
             Item2d item = new Item2d();
             item.setX(w);
-            item.setY(calc(w));
+            item.setY(Calc.calc(w));
             items.add(item);
             
         }
     }
 
+    /** Реалізація {@link View#viewInit(String)}*/
     @Override
     public void viewInit(String rows){
         init(rows);
         
     }
-
+    /** Реалізація {@link View#viewSave()} */
     @Override
     public void viewSave() throws IOException{
         ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(FNAME));
@@ -65,6 +71,7 @@ public class ViewResult implements View {
         os.close();
     }
 
+    /** Реалізація {@link View#viewRestore()}*/
     @SuppressWarnings("unchecked")
     @Override
     public void viewRestore() throws Exception{
@@ -73,23 +80,27 @@ public class ViewResult implements View {
         is.close();
     }
 
+    /** Реалізація {@link View#viewHeader()}*/
     @Override
     public void viewHeader(){
         System.out.println("\t \tResults: ");
     }
 
+    /** Реалізація {@link View#viewBody()} */
     @Override
     public void viewBody(){
         for(Item2d item : items){
             System.out.println(item);
         }
     }
-
+    /** Реалізація {@link View#viewFooter()} */
     @Override
     public void viewFooter(){
         System.out.println("----------------------------------------------------\n \t\tEND");
     }
-       
+
+
+     /** Реалізація {@link View#viewShow()}*/
     @Override
     public void viewShow(){
         viewHeader();

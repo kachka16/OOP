@@ -40,7 +40,7 @@ public class Calc{
      * @param rows вхідний рядок
      * @return кількість голосних літер
      */
-    public int calc(String rows){
+    public static int calc(String rows){
     char[] litters_golosni = {'a','A','U','u','E','e','O','o','Y','y','i','I'};
     int k = 0;
      for(char r : rows.toCharArray()){
