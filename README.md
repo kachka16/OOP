@@ -329,3 +329,10 @@ public class ViewResult implements View {
      return k;
     }
 ```
+
+## 📷Скріншот виконання
+![Приклад1](https://github.com/kachka16/OOP/blob/task-3/PR3/img/priklad1.png?raw=true)
+
+![Приклад2](https://github.com/kachka16/OOP/blob/task-3/PR3/img/priklad2.png?raw=true)
+
+![Приклад3](https://github.com/kachka16/OOP/blob/task-3/PR3/img/priklad3.png?raw=true)
