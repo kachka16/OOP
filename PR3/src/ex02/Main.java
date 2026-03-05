@@ -24,61 +24,66 @@ public class Main{
         BufferedReader in = new BufferedReader(new InputStreamReader (System.in));
         do{
             do{
-                System.out.println("Enter command...");
+                System.out.println("====================================================\n \t\tENTER COMMAND...");
                 System.out.print("'q'uit, 'v'iew, 'e'nter, 's'ave, 'r'estore: ");
                 try{
                     s = in.readLine();
                 }
                 catch(IOException e){
-                    System.out.println("Error: "+ e);
+                    System.out.println("~Error: "+ e);
                     System.exit(0);
                 }
             }
             while (s.length() !=1);
             switch (s.charAt(0)) {
                 case 'q':
-                    System.out.println("Exit.");
+                  case 'Q':
+                    System.out.println("\t\tEXIT");
                     break;
                 case 'v':
-                    System.out.println("View current.");
+                    case 'V':
+                    System.out.println("~View current.");
                     view.viewShow();
                     break;
                 case 'e':
-                    System.out.print("Enter rows: ");
+                    case 'E':
+                    System.out.print("~Enter rows: ");
                     try{
                     String x = in.readLine();
                     view.viewInit(x);
                     view.viewShow();
                     }
                      catch (IOException e){
-                        System.out.print("Input error: " + e);
+                        System.out.print("~Input error: " + e);
                      }
                     break;
                 case 's':
-                    System.out.println("Save current.");
+                    case 'S':
+                    System.out.println("~Save current.");
                     try{
                         view.viewSave();
                     }
                     catch (IOException e){
-                        System.out.println("Serializaton error: " + e);
+                        System.out.println("~Serializaton error: " + e);
                     }
                     view.viewShow();
                     break;
                 case 'r':
-                    System.out.println("Restore last saved");
+                    case 'R':
+                    System.out.println("~Restore last saved");
                     try{
                         view.viewRestore();
                     }
                     catch(Exception e){
-                     System.out.println("Serialization error: "+ e);
+                     System.out.println("~Serialization error: "+ e);
                     }
                     view.viewShow();
                     break;
                     default:
-                    System.out.println("Wrong command. ");
+                    System.out.println("~Wrong command. ");
             }
         } 
-        while(s.charAt(0)!= 'q');
+        while(s.charAt(0)!= 'q' || s.charAt(0)!= 'Q' );
     }
     /**
      * Виконується при запуску програми.

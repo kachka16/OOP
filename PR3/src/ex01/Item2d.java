@@ -22,6 +22,7 @@ public class Item2d implements Serializable{
 
     /** Автоматично згенерований спеціальний ідентифікатор версії серіалізації*/
     private static final long serialVersionUID = 1L;
+    
     public Item2d(){
         x = "";
         y = 0;
@@ -98,7 +99,8 @@ public class Item2d implements Serializable{
      */
         @Override
     public String toString(){
-        return "Rows: " + x + "\nk: " + y + "\nLenght: " + length_rows;
+        return "----------------------------------------------------\nRows: " + x + "\nk: " + y + "\nLenght: " + length_rows ;
+        
     }
     
      /**

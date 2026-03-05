@@ -12,7 +12,7 @@ public class ViewResult implements View {
 
     private static final String FNAME = "items.bin";
     private ArrayList<Item2d> items = new ArrayList<Item2d>();
-    private static final int DEFAULT_NUM = 10;
+    private static final int DEFAULT_NUM = 1;
 
     public ViewResult(){
         this(DEFAULT_NUM);
@@ -48,12 +48,14 @@ public class ViewResult implements View {
             item.setY(calc(w));
 
             items.add(item);
+            
         }
     }
 
     @Override
     public void viewInit(String rows){
         init(rows);
+        
     }
 
     @Override
@@ -74,7 +76,7 @@ public class ViewResult implements View {
 
     @Override
     public void viewHeader(){
-        System.out.println("Results: ");
+        System.out.println("\t \tResults: ");
     }
 
     @Override
@@ -86,7 +88,7 @@ public class ViewResult implements View {
 
     @Override
     public void viewFooter(){
-        System.out.println("End.");
+        System.out.println("----------------------------------------------------\n \t\tEND");
     }
        
     @Override
