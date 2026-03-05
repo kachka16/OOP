@@ -46,7 +46,6 @@ public class ViewResult implements View {
             Item2d item = new Item2d();
             item.setX(w);
             item.setY(calc(w));
-
             items.add(item);
             
         }

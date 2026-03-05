@@ -38,7 +38,7 @@ public class Main{
             switch (s.charAt(0)) {
                 case 'q':
                   case 'Q':
-                    System.out.println("\t\tEXIT");
+                    System.out.println("\t\tEXIT ");
                     break;
                 case 'v':
                     case 'V':
