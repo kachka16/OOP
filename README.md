@@ -195,136 +195,137 @@ public class ViewableResult implements Viewable {
 }
 ```
 
-### Item2d.java(зміни в оформленні)
+### ViewResult
 ``` java
-package ex01;
-import java.io.Serializable;
+package ex02;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
-public class Item2d implements Serializable{
-    /**
-     * Зберігає вхідний рядок та результат підрахунку голосних літер.
-    * Реалізує інтерфейс {@link Serializable} для підтримки серіалізації
-    * @author Левковська Марія
-    * @version 1.0
-    */
+import ex01.Item2d;
+import ex01.Calc;
 
-    /**
-     * Довжина рядка
-     * Поле позначене як {@code transient}, тому не серіалізується.
-     * Після відновлення об'єкта значення буде 0
-     */
-    private transient int length_rows;
-     /** Вхідний рядок (аргумент обчислення). */
-    private String x;
-    /** Кількість голосних у рядку. */
-    private int y;
+    /** ConcreteProduct (шаблон проектування Factory Method)
+     * Виконує обчислення, збереження та відображення результатів
+     * @author Левковська Марія
+     * @version 1.0
+     * @see View*/
 
-    /** Автоматично згенерований спеціальний ідентифікатор версії серіалізації*/
-    private static final long serialVersionUID = 1L;
-    
-    public Item2d(){
-        x = "";
-        y = 0;
-        length_rows = 0;
-    } 
-
-    /**
-     * Ініціалізує поля значеннями.
-     * @param x значення для {@linkplain Item2d#x}
-     * @param y значення для {@linkplain Item2d#y}
-     */
-     public Item2d(String x, int y){
-        this.x= x;
-        this.y =y;
-        this.length_rows = x.length();
-    } 
-
-     /**
-     * Встановлює значення поля {@linkplain Item2d#x}.
-     * Автоматично оновлює довжину рядка.
-     *
-     * @param x нове значення рядка
-     */
-    public void setX(String x){
-        this.x = x;
-        this.length_rows = x.length();
+public class ViewResult implements View {
+    /** Ім'я файлу для серіалізації */
+    private static final String FNAME = "items.bin";
+    /** Колекція результатів обчислень */
+    private ArrayList<Item2d> items = new ArrayList<Item2d>();
+    /** Кількість елементів за замовчуванням */
+    private static final int DEFAULT_NUM = 1;
+     /** Конструктор за замовчуванням */
+    public ViewResult(){
+        this(DEFAULT_NUM);
     }
 
-    /**
-     * Повертає значення {@linkplain Item2d#x}.
-     *
-     * @return поточний рядок
-     */
-    public String getX(){
-        return x;
+    /** Ініціалізує колекцію @param n кількість елементів*/
+    public ViewResult(int n){
+        for( int i = 0; i<n; i++){
+            items.add(new Item2d());
+        }
     }
 
-    /**
-     * Встановлює значення {@linkplain Item2d#y}.
-     *
-     * @param y кількість голосних
-     */
-    public void setY(int y){
-       this.y = y;
+    /** Отримати колекцію результатів
+     * @return список {@link Item2d}*/
+    public ArrayList<Item2d> getItems(){
+         return items;
     }
 
-    /**
-     * Повертає значення {@linkplain Item2d#y}.
-     *
-     * @return кількість голосних
+    /** Ініціалізує результати обчислень
+     * Рядок розбивається на слова, для кожного слова обчислюється кількість голосних за допомогою методу {@linkplain Calc#calc(String)} - item.setY(Calc.calc(w));
+     * @param rows рядок слів для обробки
      */
-    public int getY(){
-        return y;
+    public void init(String rows){
+        items.clear();
+        String[] word = rows.split(" ");
+        for(String w : word){
+            Item2d item = new Item2d();
+            item.setX(w);
+            item.setY(Calc.calc(w));
+            items.add(item);
+            
+        }
     }
 
-    /**
-     * Встановлює значення {@linkplain Item2d#x}
-     * та {@linkplain Item2d#y}.
-     *
-     * @param x новий рядок
-     * @param y кількість голосних
-     * @return поточний об'єкт
-     */
-    public Item2d setXY(String x, int y){
-        this.x = x;
-        this.y = y;
-        this.length_rows = x.length();
-        return this;
-    }
-
-    /**
-     * Повертає текстове представлення об'єкта.
-     * {@inheritDoc}
-     */
-        @Override
-    public String toString(){
-        return "----------------------------------------------------\nRows: " + x + "\nk: " + y + "\nLenght: " + length_rows ;
+    /** Реалізація {@link View#viewInit(String)}*/
+    @Override
+    public void viewInit(String rows){
+        init(rows);
         
     }
-    
-     /**
-     * Порівнює об'єкти за значеннями полів
-     * {@linkplain Item2d#x} та {@linkplain Item2d#y}.
-     *
-     * {@inheritDoc}
-     */
+    /** Реалізація {@link View#viewSave()} */
     @Override
-    public boolean equals(Object obj){
-        if(this ==obj)
-            return true;
-        if(obj==null)
-            return false;
-        if(getClass()!=obj.getClass())
-            return false;
-        Item2d other = (Item2d) obj;
-        if(y != other.y)
-            return false;
-        if(!x.equals(other.x))
-            return false;
+    public void viewSave() throws IOException{
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(FNAME));
+        os.writeObject(items);
+        os.flush();
+        os.close();
+    }
 
-        return true;
+    /** Реалізація {@link View#viewRestore()}*/
+    @SuppressWarnings("unchecked")
+    @Override
+    public void viewRestore() throws Exception{
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(FNAME));
+        items = (ArrayList<Item2d>) is.readObject();
+        is.close();
+    }
+
+    /** Реалізація {@link View#viewHeader()}*/
+    @Override
+    public void viewHeader(){
+        System.out.println("\t \tResults: ");
+    }
+
+    /** Реалізація {@link View#viewBody()} */
+    @Override
+    public void viewBody(){
+        for(Item2d item : items){
+            System.out.println(item);
+        }
+    }
+    /** Реалізація {@link View#viewFooter()} */
+    @Override
+    public void viewFooter(){
+        System.out.println("----------------------------------------------------\n \t\tEND");
+    }
+
+
+     /** Реалізація {@link View#viewShow()}*/
+    @Override
+    public void viewShow(){
+        viewHeader();
+        viewBody();
+        viewFooter();
     }
 }
 ```
 
+### Item2d.java(зміни -  оформлення виводу)
+``` java
+    public String toString(){
+        return "----------------------------------------------------\nRows: " + x + "\nk: " + y + "\nLenght: " + length_rows ;
 
+```
+### Calc.java(зміни - перетворення методу на статичний)
+``` java
+ public static int calc(String rows){
+    char[] litters_golosni = {'a','A','U','u','E','e','O','o','Y','y','i','I'};
+    int k = 0;
+     for(char r : rows.toCharArray()){
+        for( char l : litters_golosni)
+            if(r == l){
+                k++;
+            }
+      }
+     return k;
+    }
+```
