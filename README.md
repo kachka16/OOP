@@ -79,11 +79,196 @@ public class ViewableTable extends ViewableResult {
 ## ViewTable.java
 
 ```java
+package ex03;
+import java.util.Formatter;
+import ex01.Item2d;
+import ex02.ViewResult;
+
+    /**ConcreteProduct (шаблон проектування Factory Method)
+     * Забезпечує виведення результатів у вигляді таблиці
+     * @author Левковська Марія
+     * @version 3.0
+     * @see ViewResult*/
+
+public class ViewTable extends ViewResult {
+     /** Ширина таблиці за замовчуванням */
+    private static final int DEFAULT_WIDTH = 45;
+     /** Поточна ширина таблиці */
+    private int width;
+
+    /**Конструктор за замовчуванням.
+     * Встановлює ширину таблиці {@link #DEFAULT_WIDTH}*/
+    public ViewTable(){
+        width = DEFAULT_WIDTH;
+    }
+
+    /**Конструктор з параметром ширини таблиці
+     * @param width ширина таблиці*/
+    public ViewTable(int width){
+        this.width = width;
+    }
+
+    /**Конструктор з шириною таблиці та кількістю елементів
+     * @param width ширина таблиці
+     * @param n кількість елементів*/
+    public ViewTable(int width, int n){
+        super(n);
+        this.width = width;
+    }
+
+    /**Встановлює ширину таблиці
+     * @param width нова ширина
+     * @return встановлене значення ширини*/
+    public int setWidth(int width){
+        return this.width = width;
+    }
+
+    /**Повертає поточну ширину таблиці
+     * @return ширина таблиці*/
+    public int getWidth(){
+        return width;
+    }
+
+    /**Виводить горизонтальну лінію таблиці*/
+    private void outLine(){
+        for(int i = width; i> 0; i--){
+            System.out.print('-');
+        }
+    }
+
+    /**Виводить лінію таблиці та перенос рядка*/
+    private void outLineLn(){
+        outLine();
+        System.out.println();
+    }
+
+    /**Виводить заголовок таблиці*/
+    private void outHeader(){
+        Formatter fmt = new Formatter();
+        outLineLn();
+        fmt.format("%s%d%s%2$d%s", "%-", (width-4)/2, "s | %-", "s\n");
+        System.out.printf(fmt.toString(), "Ryadok", "Golosni");
+    }
+    /**Виводить тіло таблиці*/
+    private void outBody(){
+        Formatter fmt = new Formatter();
+        fmt.format("%s%d%s%2$d%s", "%-", (width-4)/2, "s | %-", "d\n");
+        for(Item2d item : getItems()){
+            System.out.printf(fmt.toString(), item.getX(), item.getY());
+        }
+    }
+
+    /**Перевантаження методу init()
+     * @param width ширина таблиці*/
+    public final void init(int width){
+        this.width = width;
+        viewInit("");
+    }
+    /** Перевантаження методу init()
+     * @param width ширина таблиці
+     * @param stepX параметр ініціалізації*/
+    public final void init(int width, String rows){
+        this.width = width;
+        init(rows);
+    }
+     /**Перевизначення методу init()
+     * @param stepX параметр ініціалізації*/
+    @Override
+    public void init(String rows){
+        System.out.print("~Initialization: ");
+        super.init(rows);
+        System.out.println("done");
+    }
+    /**Виводить заголовок таблиці*/
+    @Override
+    public void viewHeader(){
+        outHeader();
+        outLineLn();
+    }
+    /**Виводить тіло таблиці*/
+    @Override
+    public void viewBody(){
+        outBody();
+    }
+    /**Виводить нижню межу таблиці*/
+    @Override
+    public void viewFooter(){
+        outLineLn();
+    }
+}
 
 ```
 
 ## MainTest.java
 
 ```java
+package ex03;
+
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import junit.framework.Assert;
+import java.io.IOException;
+import ex01.Item2d;
+import ex02.ViewResult;
+    /**
+     * Виконує тестування розроблених класів.
+     * @author Левковська Марія
+     * @version 3.0
+     */
+public class MainTest{
+    
+    /** Перевірка основної функціональності класу {@linkplain ViewResult} */
+    @Test
+    public void testCalc(){
+        ViewTable tbl = new ViewTable(50,3);
+        assertEquals(50, tbl.getWidth());
+        assertEquals(3, tbl.getItems().size());
+
+        tbl.init(50, "Name");
+        Item2d item = new Item2d();
+        int ctr =0;
+        item.setXY("Name", 2);
+        assertTrue("expected:<"+ item + ">but was:<"+ tbl.getItems().get(ctr)+ ">", tbl.getItems().get(ctr).equals(item));
+        ctr++;
+        item.setXY("Eye", 3);
+        assertTrue("expected:<"+ item + ">but was:<"+ tbl.getItems().get(ctr)+ ">", tbl.getItems().get(ctr).equals(item));
+        item.setXY("Key", 2);
+        assertTrue("expected:<"+ item + ">but was:<"+ tbl.getItems().get(ctr)+ ">", tbl.getItems().get(ctr).equals(item));
+        
+    }
+    
+    /** Перевірка серіалізації. Коректність відновлення даних */
+    @Test
+    public void testRestore(){
+        ViewTable tbl1 = new ViewTable(50,100);
+        ViewTable tbl2 = new ViewTable();
+
+        tbl1.init(50, "Serialitatoin test");
+
+        try{
+            tbl1.viewSave();
+        }
+        catch(IOException e){
+            Assert.fail(e.getMessage());
+        }
+        
+        try{
+            tbl2.viewRestore();
+        }
+        catch(Exception e){
+            Assert.fail(e.getMessage());
+        }
+            assertEquals(tbl1.getItems().size(), tbl2.getItems().size());
+            assertTrue("containsAll()", tbl1.getItems().containsAll((tbl2.getItems())));
+        }
+    }
 
 ```
+
+## 📷Скріншот виконання
+![Приклад1](https://github.com/kachka16/OOP/blob/task-4/PR4/img/priklad1.png?raw=true)
+
+![Приклад2](https://github.com/kachka16/OOP/blob/task-4/PR4/img/priklad2.png?raw=true)
+
+![Приклад3](https://github.com/kachka16/OOP/blob/task-4/PR4/img/priklad3.png?raw=true)
