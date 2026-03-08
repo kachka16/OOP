@@ -21,10 +21,9 @@ public class ViewResult implements View {
     /** Колекція результатів обчислень */
     private ArrayList<Item2d> items = new ArrayList<Item2d>();
     /** Кількість елементів за замовчуванням */
-    private static final int DEFAULT_NUM = 1;
      /** Конструктор за замовчуванням */
     public ViewResult(){
-        this(DEFAULT_NUM);
+        items.clear();
     }
 
     /** Ініціалізує колекцію @param n кількість елементів*/
@@ -45,7 +44,6 @@ public class ViewResult implements View {
      * @param rows рядок слів для обробки
      */
     public void init(String rows){
-        items.clear();
         String[] word = rows.split(" ");
         for(String w : word){
             Item2d item = new Item2d();
@@ -60,7 +58,6 @@ public class ViewResult implements View {
     @Override
     public void viewInit(String rows){
         init(rows);
-        
     }
     /** Реалізація {@link View#viewSave()} */
     @Override
@@ -89,6 +86,7 @@ public class ViewResult implements View {
     /** Реалізація {@link View#viewBody()} */
     @Override
     public void viewBody(){
+
         for(Item2d item : items){
             System.out.println(item);
         }

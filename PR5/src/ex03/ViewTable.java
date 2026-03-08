@@ -70,6 +70,10 @@ public class ViewTable extends ViewResult {
     }
     /**Виводить тіло таблиці*/
     private void outBody(){
+        if(getItems().isEmpty()){
+        System.out.printf("%-20s | %d\n", "Nothing", 0);
+            return;
+        }
         Formatter fmt = new Formatter();
         fmt.format("%s%d%s%2$d%s", "%-", (width-4)/2, "s | %-", "d\n");
         for(Item2d item : getItems()){
@@ -94,9 +98,7 @@ public class ViewTable extends ViewResult {
      * @param stepX параметр ініціалізації*/
     @Override
     public void init(String rows){
-        System.out.print("~Initialization: ");
         super.init(rows);
-        System.out.println("done");
     }
     /**Виводить заголовок таблиці*/
     @Override
@@ -108,6 +110,7 @@ public class ViewTable extends ViewResult {
     @Override
     public void viewBody(){
         outBody();
+        
     }
     /**Виводить нижню межу таблиці*/
     @Override
