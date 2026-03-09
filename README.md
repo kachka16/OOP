@@ -20,6 +20,10 @@
 
 ![Структура проекту](https://github.com/kachka16/OOP/blob/task-4/PR4/img/structura.png?raw=true)
 
+### Тестування проекту
+
+![Структура проекту](https://github.com/kachka16/OOP/blob/task-4/PR4/img/test.png?raw=true)
+
 ## Main.java
 
 ``` java
@@ -223,18 +227,14 @@ public class MainTest{
     public void testCalc(){
         ViewTable tbl = new ViewTable(50,3);
         assertEquals(50, tbl.getWidth());
-        assertEquals(3, tbl.getItems().size());
 
         tbl.init(50, "Name");
+        assertEquals(1, tbl.getItems().size());
         Item2d item = new Item2d();
         int ctr =0;
         item.setXY("Name", 2);
-        assertTrue("expected:<"+ item + ">but was:<"+ tbl.getItems().get(ctr)+ ">", tbl.getItems().get(ctr).equals(item));
-        ctr++;
-        item.setXY("Eye", 3);
-        assertTrue("expected:<"+ item + ">but was:<"+ tbl.getItems().get(ctr)+ ">", tbl.getItems().get(ctr).equals(item));
-        item.setXY("Key", 2);
-        assertTrue("expected:<"+ item + ">but was:<"+ tbl.getItems().get(ctr)+ ">", tbl.getItems().get(ctr).equals(item));
+        assertTrue(tbl.getItems().get(ctr).equals(item));
+        assertTrue(tbl.getItems().get(ctr).equals(item));
         
     }
     
