@@ -19,6 +19,10 @@
 ## Структура проекту
 ![Структура проекту](https://github.com/kachka16/OOP/blob/task-3/PR3/img/structura.png?raw=true)
 
+### Тестування проекту 
+
+![Тест](https://github.com/kachka16/OOP/blob/task-3/PR3/img/test.png?raw=true)
+
 ### Main.java
 ``` java
 package ex02;
