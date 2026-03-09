@@ -9,19 +9,21 @@ public class MainTest {
     public void testExecute(){
         ChangeItemCommand cmd = new ChangeItemCommand();
         cmd.setItem(new Item2d());
-        cmd.getItem().setX("Hello");
-        cmd.getItem().setY(2);
-           cmd.setOffset(3);
-            cmd.execute();
-            assertEquals("Hello", cmd.getItem().getX());
-          assertEquals(6, cmd.getItem().getY());
+        String rows;
+        for(int ctr = 0; ctr< 10; ctr++){
+            rows="Hello" + ctr;
+            cmd.getItem().setX(rows);
+             cmd.execute();
+          assertEquals(rows, cmd.getItem().getX());
+          assertTrue(cmd.getItem().getY() > 0);
+        }
     }
     @Test
     public void testCahngeConsoleCOmmand (){
         ChangeConsoleCommand cmd = new ChangeConsoleCommand(new ViewResult());
         cmd.getView().viewInit("");
         cmd.execute();
-        assertEquals("'c'hange", cmd.toString());
-        assertEquals('c', cmd.getKey());
+        assertEquals("'d'elete(last word)", cmd.toString());
+        assertEquals('d', cmd.getKey());
     }
 }

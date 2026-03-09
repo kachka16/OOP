@@ -6,6 +6,7 @@ import ex02.ViewResult;
 
 public class ChangeConsoleCommand extends ChangeItemCommand implements ConsoleCommand{
 
+    private Item2d deleteLastWord;
     private View view;
     public View getView(){
         return view;
@@ -22,9 +23,20 @@ public class ChangeConsoleCommand extends ChangeItemCommand implements ConsoleCo
     public String toString(){
         return "'d'elete(last word)";
     }
+     public void undo(){
+        ViewResult vresult = (ViewResult) view;
+        if(deleteLastWord != null){
+            vresult.getItems().add(deleteLastWord);
+             System.out.println("Undo last action");
+        }
+        view.viewShow();
+    }
     public void execute(){
         ViewResult vresult = (ViewResult) view;
-        vresult.getItems().remove(vresult.getItems().size()-1);
+        if(vresult.getItems().size()>0){
+        deleteLastWord = vresult.getItems().remove(vresult.getItems().size()-1);
+        System.out.println("Delete last word");
+        }
        view.viewShow();
     }
 }

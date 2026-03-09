@@ -12,7 +12,7 @@ public class Menu implements Command{
         return command;
     }
     public String toString(){
-        String s = "Enter command...\n";
+        String s = "Enter command...";
         for(ConsoleCommand c: menu){
             s+= c+", ";
         }

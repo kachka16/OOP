@@ -17,7 +17,9 @@ public class Application{
         new java.io.File("items.bin").delete();
         menu.add(new ViewConsoleCommand(view));
         menu.add(new  GenerateConsoleCommand(view));
-        menu.add(new ChangeConsoleCommand(view));
+        ChangeConsoleCommand ccm = new ChangeConsoleCommand(view);
+        menu.add(ccm);
+        menu.add(new UndoConsoleCommand(ccm));
         menu.add(new SaveConsoleCommand (view));
         menu.add(new RestoreConsoleCommand(view));
         menu.execute();
