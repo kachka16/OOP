@@ -27,7 +27,6 @@ public class ChangeConsoleCommand extends ChangeItemCommand implements ConsoleCo
         ViewResult vresult = (ViewResult) view;
         if(deleteLastWord != null){
             vresult.getItems().add(deleteLastWord);
-             System.out.println("Undo last action");
         }
         view.viewShow();
     }
@@ -35,7 +34,7 @@ public class ChangeConsoleCommand extends ChangeItemCommand implements ConsoleCo
         ViewResult vresult = (ViewResult) view;
         if(vresult.getItems().size()>0){
         deleteLastWord = vresult.getItems().remove(vresult.getItems().size()-1);
-        System.out.println("Delete last word");
+        System.out.println("~Delete last word");
         }
        view.viewShow();
     }

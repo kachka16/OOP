@@ -13,7 +13,7 @@ public class ViewConsoleCommand implements ConsoleCommand {
         return "\n'v'iew";
     }
     public void execute(){
-       System.out.println("View current");
+       System.out.println("~View current");
         view.viewShow();
     }
 }

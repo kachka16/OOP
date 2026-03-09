@@ -17,6 +17,7 @@ public class UndoConsoleCommand implements ConsoleCommand{
         return "'u'ndo";
     }
     public void execute(){
+        System.out.println("~Undo last action");
         cmd.undo();
     }
 }

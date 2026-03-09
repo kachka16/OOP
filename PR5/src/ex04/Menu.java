@@ -12,7 +12,8 @@ public class Menu implements Command{
         return command;
     }
     public String toString(){
-        String s = "Enter command...";
+        System.out.println("\n==========================================================================\n\t\t\tKILKIST GOLOSNIKH");
+        String s = "~Enter command:";
         for(ConsoleCommand c: menu){
             s+= c+", ";
         }
@@ -28,15 +29,16 @@ public class Menu implements Command{
                 System.out.print(this);
                 try{
                     s = in.readLine();
+                    System.out.println("==========================================================================");
                 }
                 catch(IOException e){
-                    System.err.println("Error: "+ e);
+                    System.err.println("~Error: "+ e);
                     System.exit(0);
                 }
             } while(s.length()!=1);
             char key = s.charAt(0);
             if(key=='q'){
-                System.out.println("Exit.");
+                System.out.println("~Exit.");
                 break menu;
             }
             for(ConsoleCommand c: menu){
@@ -45,7 +47,7 @@ public class Menu implements Command{
                     continue menu;
                 }
             }
-            System.out.println("Wrong command.");
+            System.out.println("~Wrong command.");
             continue menu;
         }
     }

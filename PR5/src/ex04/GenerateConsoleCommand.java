@@ -18,7 +18,7 @@ public class GenerateConsoleCommand implements ConsoleCommand{
     }
     public void execute(){
         String s = null;
-        System.out.print("Enter new row: ");     
+        System.out.print("~Enter new row: ");     
          BufferedReader in = new BufferedReader(new InputStreamReader (System.in));   
           try{
             s = in.readLine();
