@@ -20,11 +20,3 @@
 
 ![Структура проекту](https://github.com/kachka16/OOP/blob/task-4/PR4/img/structura.png?raw=true)
 
-## 📷Скріншот виконання
-![Приклад1](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad1.png?raw=true)
-
-![Приклад2](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad2.png?raw=true)
-
-![Приклад3](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad3.png?raw=true)
-
-![Приклад3](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad4.png?raw=true)
