@@ -3,10 +3,12 @@ import java.io.BufferedReader;
 import java.io.IOException; 
 import java.io.InputStreamReader; 
 import java.util.ArrayList; 
+import ex03.ViewTable;
 import java.util.List; 
 public class Menu implements Command{
     
     private List<ConsoleCommand> menu = new ArrayList<ConsoleCommand>();
+    ViewTable vtable = new ViewTable();
     public ConsoleCommand add(ConsoleCommand command){
         menu.add(command);
         return command;
@@ -39,6 +41,7 @@ public class Menu implements Command{
             char key = s.charAt(0);
             if(key=='q'){
                 System.out.println("~Exit.");
+                vtable.outLine();
                 break menu;
             }
             for(ConsoleCommand c: menu){

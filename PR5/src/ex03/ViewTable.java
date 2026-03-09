@@ -49,7 +49,7 @@ public class ViewTable extends ViewResult {
     }
 
     /**Виводить горизонтальну лінію таблиці*/
-    private void outLine(){
+    public void outLine(){
         for(int i = width; i> 0; i--){
             System.out.print('-');
         }
