@@ -1,11 +1,13 @@
 package ex04;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import ex02.View;
-import ex03.ViewTable;
+    /** Консольна команда
+     * Undo - скасовує останню виконану операцію
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0*/
 public class UndoConsoleCommand implements ConsoleCommand{
+    /** Команда, для якої виконується undo*/
     private ChangeConsoleCommand cmd;
     public UndoConsoleCommand(ChangeConsoleCommand cmd){
         this.cmd = cmd;

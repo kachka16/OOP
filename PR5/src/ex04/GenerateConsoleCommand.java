@@ -5,8 +5,19 @@ import java.io.InputStreamReader;
 
 import ex02.View;
 import ex03.ViewTable;
+    /** Консольна команда Enter new row;
+     *  дозволяє вводити новий рядок, щоб підрахувати кількість голосних
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0
+     */
+
 public class GenerateConsoleCommand implements ConsoleCommand{
+    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію {@linkplain ex01.Item2d}*/
     private View view;
+     /** Ініціалізує поле {@linkplain GenerateConsoleCommand#view}
+     * @param view об'єкт {@linkplain View} */
     public GenerateConsoleCommand(View view){
         this.view = view;
     }
