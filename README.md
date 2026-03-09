@@ -17,6 +17,9 @@
 ## Структура проекту
 ![Структура проекту](https://github.com/kachka16/OOP/blob/task-2/PR2/img/structura.png?raw=true)
 
+## Тестування проекту
+![Структура проекту](https://github.com/kachka16/OOP/blob/task-2/PR2/img/test.png?raw=true)
+
 ### Calc.java
 ```java
 package ex01;
