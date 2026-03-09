@@ -21,7 +21,7 @@
 
 ### Тестування проекту 
 
-![Тест](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad4.png?raw=true)
+![Тест](https://github.com/kachka16/OOP/blob/task-5/PR5/img/test.png?raw=true)
 
 ## 📷Скріншот виконання
 ![Приклад1](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad1.png?raw=true)
