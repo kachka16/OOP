@@ -17,7 +17,11 @@
 
 ### Структура проекту
 
-![Структура проекту](https://github.com/kachka16/OOP/blob/task-4/PR4/img/structura.png?raw=true)
+![Структура проекту](https://github.com/kachka16/OOP/blob/task-5/PR5/img/structura.png?raw=true)
+
+### Тестування проекту 
+
+![Тест](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad4.png?raw=true)
 
 ## 📷Скріншот виконання
 ![Приклад1](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad1.png?raw=true)
