@@ -1,6 +1,4 @@
 package ex04;
-import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
-
 import ex02.View;
 import ex02.ViewResult;
 import ex03.ViewableTable;
