@@ -19,7 +19,7 @@ public class ExecuteConsoleCommand implements ConsoleCommand{
         return 'x';
     }
     public String toString(){
-        return "'x'xecute";
+        return "e'x'ecute";
     }
     public void execute(){
         CommandQueue queue1 = new CommandQueue();
