@@ -1,6 +1,7 @@
 package ex05;
 import ex02.View;
 import ex02.ViewableResult;
+import ex03.ViewableTable;
 import ex04.ChangeConsoleCommand;
 import ex04.GenerateConsoleCommand;
 import ex04.Menu;
@@ -10,7 +11,7 @@ import ex04.UndoConsoleCommand;
 import ex04.ViewConsoleCommand;
 
 public class Main {
-    private View view = new ViewableResult().getView();
+    private View view = new ViewableTable().getView();
     private Menu menu = new Menu();
     public void run(){
         menu.add(new ViewConsoleCommand(view));

@@ -11,7 +11,7 @@ import ex02.ViewResult;
 
 public class ViewTable extends ViewResult {
      /** Ширина таблиці за замовчуванням */
-    private static final int DEFAULT_WIDTH = 74;
+    private static final int DEFAULT_WIDTH = 85;
      /** Поточна ширина таблиці */
     private int width;
 
@@ -71,7 +71,7 @@ public class ViewTable extends ViewResult {
     /**Виводить тіло таблиці*/
     private void outBody(){
         if(getItems().isEmpty()){
-        System.out.printf("%-35s | %d\n", "Nothing", 0);
+        System.out.printf("%-40s | %d\n", "Nothing", 0);
             return;
         }
         Formatter fmt = new Formatter();

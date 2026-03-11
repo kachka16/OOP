@@ -22,7 +22,7 @@ public class Menu implements Command{
         return command;
     }
     public String toString(){
-        System.out.println("\n==========================================================================\n\t\t\tKILKIST GOLOSNIKH");
+        System.out.println("\n=====================================================================================\n\t\t\t\tKILKIST GOLOSNIKH");
         String s = "~Enter command:";
         for(ConsoleCommand c: menu){
             s+= c+", ";
@@ -39,7 +39,7 @@ public class Menu implements Command{
                 System.out.print(this);
                 try{
                     s = in.readLine();
-                    System.out.println("==========================================================================");
+                    System.out.println("=====================================================================================");
                 }
                 catch(IOException e){
                     System.err.println("~Error: "+ e);

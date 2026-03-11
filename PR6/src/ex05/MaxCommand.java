@@ -32,7 +32,7 @@ public class MaxCommand implements Command {
                 result = idx;
             }
             progress = idx * 100/ size;
-            if(idx % (size /3)==0){
+            if(size >=3 && idx % (size /3)==0){
                 System.out.println("Max " + progress + "%");
             }
             try{
@@ -42,7 +42,7 @@ public class MaxCommand implements Command {
                 System.err.println(e);
             }
         }
-        System.out.println("Max done. Item #" + result + " found: " + viewResult.getItems().get(result));
+        System.out.println(" ~Max positive #" + result + " found: " + "\"" + viewResult.getItems().get(result).getX() + "\"" + " golosni = " + viewResult.getItems().get(result).getY());
         progress = 100;
     }
 }

@@ -54,14 +54,14 @@ public class AvgCommand implements Command{
     @Override
     public void execute(){
         progress = 0;
-        System.out.println("~Average execute...");
+        System.out.println("Average execute...");
         result = 0.0;
         int idx = 1, size = viewResult.getItems().size();
         for(Item2d item : viewResult.getItems()){
             result += item.getY();
             progress = idx *100 / size;
-            if(idx++ % (size / 2) == 0){
-                System.out.println("~Average " + progress + "%");
+            if(size >=2 && idx++ % (size / 2) == 0){
+                System.out.println("Average " + progress + "%");
             }
             try{
                 TimeUnit.MILLISECONDS.sleep(2000/size);
@@ -71,7 +71,7 @@ public class AvgCommand implements Command{
             }
         }
         result /= size;
-        System.out.println("~Average done. Result = " + String.format("%.2f",result));
+        System.out.println(" ~Average done. Result = " + String.format("%.2f",result));
         progress = 100;
     }
 }

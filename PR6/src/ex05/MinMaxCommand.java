@@ -35,19 +35,16 @@ public class MinMaxCommand implements Command{
         System.out.println("MinMax executed...");
         int idx = 0 , size = viewResult.getItems().size();
         for(Item2d item : viewResult.getItems()){
-            if(item.getY()<0){
                 if((resultMax == -1) || (viewResult.getItems().get(resultMax).getY()< item.getY())){
                     resultMax = idx;
                 }
-            }
-            else{
+
                 if((resultMin == -1) || (viewResult.getItems().get(resultMin).getY()> item.getY())){
                     resultMin = idx;
                 }
-            }
             idx++;
             progress = idx * 100/size;
-            if(idx %(size/5) == 0){
+            if(size >=5 && idx %(size/5) == 0){
                 System.out.println("MinMax "+ progress + "%");
             }
             try{
@@ -57,18 +54,12 @@ public class MinMaxCommand implements Command{
                 System.err.println(e);
             }
         }
-        System.out.print("MinMax doxe. ");
+        System.out.print(" ~MinMax doxe. ");
         if(resultMin > -1){
-            System.out.print("Min positive #" + resultMin + " found: " + "\"" + viewResult.getItems().get(resultMin).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMin).getY());
+            System.out.println("Min positive #" + resultMin + " found: " + "\"" + viewResult.getItems().get(resultMin).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMin).getY());
         }
         else{
-            System.out.println("Min positive not found");
-        }
-        if(resultMax > -1){
-            System.out.print("Max negative #" + resultMax + " found: " + "\"" + viewResult.getItems().get(resultMax).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMax).getY());
-        }
-        else{
-            System.out.println("Max negative item not found");
+            System.out.println(" ~Min positive not found");
         }
         progress = 100;
     }
