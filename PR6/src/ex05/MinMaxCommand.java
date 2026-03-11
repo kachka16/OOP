@@ -21,6 +21,9 @@ public class MinMaxCommand implements Command{
     public int getResult(){
         return resultMin;
     }
+    public int getResultMin(){
+        return resultMin;
+    }
     public int getResultMax(){
         return resultMax;
     }
