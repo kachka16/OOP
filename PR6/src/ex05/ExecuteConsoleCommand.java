@@ -3,24 +3,45 @@ import java.util.concurrent.TimeUnit;
 import ex02.View;
 import ex02.ViewResult;
 import ex04.ConsoleCommand;
-
+    /**Консольна команда
+     * Execute all threads;
+     * шаблон Command
+     * @author  Левковська марія
+     * @version 1.0
+     */
 public class ExecuteConsoleCommand implements ConsoleCommand{
+    /**Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}
+     */
     private View view;
+     /**Повертає поле {@linkplain ExecuteConsoleCommand#view}
+     * @return значення {@linkplain ExecuteConsoleCommand#view}
+     */
     public View getView(){
         return view;
     }
+    /**Встановлює поле {@linkplain ExecuteConsoleCommand#view}
+     * @param view значення для {@linkplain ExecuteConsoleCommand#view}
+     * @return нове значення {@linkplain ExecuteConsoleCommand#view}
+     */
     public View setView(View view){
         return this.view = view;
     }
+    /**Ініціалізує поле {@linkplain ExecuteConsoleCommand#view}
+     * @param view об'єкт, що реалізує {@linkplain View}
+     */
     public ExecuteConsoleCommand(View view){
         this.view =view;
     }
+    @Override
     public char getKey(){
         return 'x';
     }
+    @Override
     public String toString(){
         return "e'x'ecute";
     }
+    @Override
     public void execute(){
         CommandQueue queue1 = new CommandQueue();
         CommandQueue queue2 = new CommandQueue();
