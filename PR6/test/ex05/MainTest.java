@@ -9,7 +9,7 @@ import org.junit.Test;
 import ex02.ViewResult;
 
 public class MainTest {
-    private final static int N = 30;
+    private final static int N = 5;
     private static ViewResult view = new ViewResult(N);
     private static MaxCommand max1 = new MaxCommand(view);
     private static MaxCommand max2 = new MaxCommand(view);
@@ -32,19 +32,23 @@ public class MainTest {
         assertEquals(min1.getResultMax(),min2.getResultMax());
         assertEquals(min1.getResultMin(),min2.getResultMin());
     }
+    @Test
     public void testMax(){
         max1.execute();
         assertTrue(max1.getResult()> -1);
     }
+    @Test
     public void testMin(){
         min1.execute();
         assertTrue(min1.getResultMin()> -1);
         assertTrue(min1.getResultMax()> -1);
     }
+    @Test
     public void testAvg(){
         avg1.execute();
         assertTrue(avg1.getResult() != 0.0);
     }
+    @Test
     public void testMaxQueue(){
         queue.put(max2);
         try{
@@ -58,7 +62,7 @@ public class MainTest {
             fail(e.toString());
         }
     }
-
+    @Test
     public void testAvgQueue(){
         queue.put(avg2);
         try{
@@ -72,6 +76,7 @@ public class MainTest {
             fail(e.toString());
         }
     }
+    @Test
     public void testMinQueue(){
         queue.put(min2);
         try{

@@ -20,7 +20,7 @@ public class MaxCommand implements Command {
         return result;
     }
     public boolean running(){
-        return progress < 0;
+        return progress < 100;
     }
     public void execute(){
         progress = 0;

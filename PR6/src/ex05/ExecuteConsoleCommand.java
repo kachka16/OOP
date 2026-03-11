@@ -37,7 +37,7 @@ public class ExecuteConsoleCommand implements ConsoleCommand{
           }  
           queue1.shutdown();
           queue2.shutdown();
-          TimeUnit.SECONDS.sleep(100);
+          TimeUnit.SECONDS.sleep(1);
         }
         catch(InterruptedException e){
             System.err.println(e);
