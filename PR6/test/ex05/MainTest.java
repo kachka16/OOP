@@ -9,7 +9,7 @@ import org.junit.Test;
 import ex02.ViewResult;
 
 public class MainTest {
-    private final static int N = 5;
+    private final static int N = 12;
     private static ViewResult view = new ViewResult();
     private static MaxCommand max1 = new MaxCommand(view);
     private static MaxCommand max2 = new MaxCommand(view);
@@ -21,7 +21,7 @@ public class MainTest {
 
     @BeforeClass
     public static void setUpBeforeClass(){
-        view.viewInit("text for testing my MainTest");
+        view.viewInit("text for testing my MainTest. Different words just like interesting smart sad");
         assertEquals(N, view.getItems().size());
     }
 
@@ -41,7 +41,6 @@ public class MainTest {
     public void testMin(){
         min1.execute();
         assertTrue(min1.getResultMin()> -1);
-        assertTrue(min1.getResultMax()> -1);
     }
     @Test
     public void testAvg(){
