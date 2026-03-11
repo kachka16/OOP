@@ -61,6 +61,12 @@ public class MinMaxCommand implements Command{
         else{
             System.out.println(" ~Min positive not found");
         }
+        if(resultMax > -1){
+            System.out.println("Min positive #" + resultMax + " found: " + "\"" + viewResult.getItems().get(resultMax).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMax).getY());
+        }
+        else{
+            System.out.println(" ~Max negative not found");
+        }
         progress = 100;
     }
 }
