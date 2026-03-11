@@ -41,7 +41,7 @@ public class MinMaxCommand implements Command{
                 }
             }
             else{
-                if((resultMin == -1) || (viewResult.getItems().get(resultMin).getY()< item.getY())){
+                if((resultMin == -1) || (viewResult.getItems().get(resultMin).getY()> item.getY())){
                     resultMin = idx;
                 }
             }
@@ -60,6 +60,12 @@ public class MinMaxCommand implements Command{
         System.out.print("MinMax doxe. ");
         if(resultMin > -1){
             System.out.print("Min positive #" + resultMin + " found: " + "\"" + viewResult.getItems().get(resultMin).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMin).getY());
+        }
+        else{
+            System.out.println("Min positive not found");
+        }
+        if(resultMax > -1){
+            System.out.print("Max negative #" + resultMax + " found: " + "\"" + viewResult.getItems().get(resultMax).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMax).getY());
         }
         else{
             System.out.println("Max negative item not found");

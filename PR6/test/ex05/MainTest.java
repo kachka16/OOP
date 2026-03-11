@@ -10,7 +10,7 @@ import ex02.ViewResult;
 
 public class MainTest {
     private final static int N = 5;
-    private static ViewResult view = new ViewResult(N);
+    private static ViewResult view = new ViewResult();
     private static MaxCommand max1 = new MaxCommand(view);
     private static MaxCommand max2 = new MaxCommand(view);
     private static AvgCommand avg1 = new AvgCommand(view);
@@ -20,7 +20,7 @@ public class MainTest {
     private CommandQueue queue = new CommandQueue();
 
     @BeforeClass
-    private static void setUpBeforeClass(){
+    public static void setUpBeforeClass(){
         view.viewInit("text for testing my MainTest");
         assertEquals(N, view.getItems().size());
     }
