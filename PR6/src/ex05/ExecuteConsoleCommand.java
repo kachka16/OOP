@@ -16,10 +16,10 @@ public class ExecuteConsoleCommand implements ConsoleCommand{
         this.view =view;
     }
     public char getKey(){
-        return 'e';
+        return 'x';
     }
     public String toString(){
-        return "'e'xecute";
+        return "'x'xecute";
     }
     public void execute(){
         CommandQueue queue1 = new CommandQueue();
