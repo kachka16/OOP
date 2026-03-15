@@ -3,7 +3,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import ex01.Item2d;
 import ex02.ViewResult;
-import ex01.Calc;
+
 public class MainTest {
     @Test
     public void testExecute(){
