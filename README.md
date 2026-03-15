@@ -1,287 +1,66 @@
-# Паралельнdа обробка елементів 
+# Консольний додаток для обробки колекцій
 
 ## Постановка задачі
 
 ### **Завдання:**
 
-1. Паралельна обробка
-   * Продемонструвати можливість паралельної обробки елементів колекції (пошук мінімуму, максимуму, обчислення середнього значення, відбір за критерієм, статистична обробка тощо).
-2. Worker Thread
-   * Управління чергою завдань (команд) реалізувати за допомогою шаблону Worker Thread.
+1. Скасування операції
+   * Реалізувати можливість скасування (undo) операцій (команд).
+2. Макрокоманда
+   * Продемонструвати поняття "макрокоманда"
+3. Шаблон singletone
+   * При розробці програми використовувати шаблон Singletone.
+4. Діалоговий інтерфейс
+   * Забезпечити діалоговий інтерфейс із користувачем.
+5. Тестування
+   *Розробити клас для тестування функціональності програми.
 
 ### Структура проекту
 
-![Структура проекту](https://github.com/kachka16/OOP/blob/task-6/PR6/img/structura.png?raw=true)
+![Структура проекту](https://github.com/kachka16/OOP/blob/task-5/PR5/img/structura.png?raw=true)
 
 ### Тестування проекту 
 
-![Тест](https://github.com/kachka16/OOP/blob/task-6/PR6/img/test.png?raw=true)
+![Тест](https://github.com/kachka16/OOP/blob/task-5/PR5/img/test.png?raw=true)
 
-## AvgCommand.java
+## Application.java
+
 ``` java
-package ex05;
-import java.util.concurrent.TimeUnit;
-import ex01.Item2d;
-import ex02.ViewResult;
-import ex04.Command;
-    /**Задача, що використовується обробником потоку;
-     * шаблон Worker Thread
-     * @author Левковська Марія 
-     * @version 1.0
-     * @see Command
-     * @see CommandQueue
-     */
-public class AvgCommand implements Command{
-    /** Зберігає результат обробки колекції */
-    private double result = 0.0;
-     /** Прапорець готовності результату */
-    private int progress = 0;
-    /** Обслуговує колекцію об'єктів {@linkplain ex01.Item2d} */
-    private ViewResult viewResult;
-     /**Повертає поле {@linkplain AvgCommand#viewResult}
-     * @return значення {@linkplain AvgCommand#viewResult}*/
-    public ViewResult getViewResult(){
-        return viewResult;
-    }
-    /**Встановлює поле {@linkplain AvgCommand#viewResult}
-     * @param viewResult значення для {@linkplain AvgCommand#viewResult}
-     * @return нове значення {@linkplain AvgCommand#viewResult}
-     * */
-    public ViewResult setViewResult(ViewResult viewResult){
-        return this.viewResult = viewResult;
-    }
+package ex04;
+import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 
-     /**Ініціалізує поле {@linkplain AvgCommand#viewResult}
-     * @param viewResult об'єкт класу {@linkplain ViewResult}
-     */
-    public AvgCommand(ViewResult viewResult){
-        this.viewResult = viewResult;
-    }
-    /**Повертає результат
-     * @return поле {@linkplain AvgCommand#result}
-     */
-    public double getResult(){
-        return result;
-    }
-    /**Перевіряє готовність результату
-     * @return false – якщо результат отримано, інакше – true
-     * @see AvgCommand#result
-     */
-    public boolean running(){
-        return progress <100;
-    }
-    /** Використовується обробником потоку {@linkplain CommandQueue};
-     * шаблон Worker Thread*/
-    @Override
-    public void execute(){
-        progress = 0;
-        System.out.println("Average execute...");
-        result = 0.0;
-        int idx = 1, size = viewResult.getItems().size();
-        for(Item2d item : viewResult.getItems()){
-            result += item.getY();
-            progress = idx *100 / size;
-            if(size >=2 && idx++ % (size / 2) == 0){
-                System.out.println("Average " + progress + "%");
-            }
-            try{
-                TimeUnit.MILLISECONDS.sleep(2000/size);
-            }
-            catch (InterruptedException e){
-                System.err.println(e);
-            }
-        }
-        result /= size;
-        System.out.println(" ~Average done. Result = " + String.format("%.2f",result));
-        progress = 100;
-    }
-}
-
-
-```
-
-## CommandQueue.java
-``` java
-package ex05;
-import java.util.Vector;
-import ex04.Command;    
-    /*** Створює обробник потоку, що виконує об'єкти з інтерфейсом
-     * Command; шаблон
-     * Worker Thread
-     * @author Левковська Марія
-     * @version 1.0
-     * @see Command
-     */
-public class CommandQueue implements Queue{
-    /** Черга задач */
-    private Vector<Command> tasks;
-     /** Прапорець очікування */
-    private boolean waiting;
-    /** Прапорець завершення роботи */
-    private boolean shutdown;
-    /** Встановлює прапорець завершення */
-    public void shutdown(){
-        shutdown = true;
-    }
-    /**Ініціалізація {@linkplain CommandQueue#tasks}
-     * {@linkplain CommandQueue#waiting};
-     * створює потік для класу {@linkplain CommandQueue.Worker}
-     */
-    public CommandQueue(){
-        tasks = new Vector<Command>();
-        waiting = false;
-        new Thread(new Worker()).start();
-    }
-    /**Додає нову задачу до черги
-     * @param r об'єкт типу {@linkplain Command}
-     */
-    public void put(Command r){
-        tasks.add(r);
-        if(waiting){
-            synchronized (this){
-                notifyAll();
-            }
-        }
-    }
-    /**Отримує задачу з черги
-     * @return об'єкт {@linkplain Command}
-     */
-    public Command take(){
-        if (tasks.isEmpty()){
-            synchronized (this){
-                waiting = true;
-                try{
-                    wait();
-                }
-                catch(InterruptedException ie){
-                    waiting = false;
-                }
-            }
-        }
-        return (Command) tasks.remove(0);
-    }
-    /** Обслуговує чергу задач; шаблон
-     * Worker Thread 
-     * @author Левковська Марія
-     * @version 1.0
-     * @see Runnable
-     */
-    private class Worker implements Runnable{
-        public void run(){
-            while(!shutdown){
-                Command r = take();
-                r.execute();
-            }
-        }
-    }
-    
-}
-
-```
-
-## ExecuteConsoleCommand.java
-``` java
-package ex05;
-import java.util.concurrent.TimeUnit;
 import ex02.View;
 import ex02.ViewResult;
-import ex04.ConsoleCommand;
-    /**Консольна команда
-     * Execute all threads;
-     * шаблон Command
-     * @author  Левковська марія
-     * @version 1.0
-     */
-public class ExecuteConsoleCommand implements ConsoleCommand{
-    /**Об'єкт, що реалізує інтерфейс {@linkplain View};
-     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}
-     */
-    private View view;
-     /**Повертає поле {@linkplain ExecuteConsoleCommand#view}
-     * @return значення {@linkplain ExecuteConsoleCommand#view}
-     */
-    public View getView(){
-        return view;
-    }
-    /**Встановлює поле {@linkplain ExecuteConsoleCommand#view}
-     * @param view значення для {@linkplain ExecuteConsoleCommand#view}
-     * @return нове значення {@linkplain ExecuteConsoleCommand#view}
-     */
-    public View setView(View view){
-        return this.view = view;
-    }
-    /**Ініціалізує поле {@linkplain ExecuteConsoleCommand#view}
-     * @param view об'єкт, що реалізує {@linkplain View}
-     */
-    public ExecuteConsoleCommand(View view){
-        this.view =view;
-    }
-    @Override
-    public char getKey(){
-        return 'x';
-    }
-    @Override
-    public String toString(){
-        return "e'x'ecute";
-    }
-    @Override
-    public void execute(){
-        CommandQueue queue1 = new CommandQueue();
-        CommandQueue queue2 = new CommandQueue();
-        MaxCommand maxCommand = new MaxCommand((ViewResult)view);
-        AvgCommand avgCommand = new AvgCommand((ViewResult)view);
-        MinMaxCommand minMaxCommand = new MinMaxCommand((ViewResult)view);
-        System.out.println("Execute all threads...");
-        queue1.put(minMaxCommand);
-        queue2.put(maxCommand);
-        queue2.put(avgCommand);
-        try{
-          while(avgCommand.running() || maxCommand.running() || minMaxCommand.running()){
-            TimeUnit.MILLISECONDS.sleep(100);
-          }  
-          queue1.shutdown();
-          queue2.shutdown();
-          TimeUnit.SECONDS.sleep(1);
-        }
-        catch(InterruptedException e){
-            System.err.println(e);
-        }
-        System.out.println("All done.");
-    }
-}
-
-```
-
-## Main.java
-``` java
-package ex05;
-import ex02.View;
-import ex02.ViewableResult;
 import ex03.ViewableTable;
-import ex04.ChangeConsoleCommand;
-import ex04.GenerateConsoleCommand;
-import ex04.Menu;
-import ex04.RestoreConsoleCommand;
-import ex04.SaveConsoleCommand;
-import ex04.UndoConsoleCommand;
-import ex04.ViewConsoleCommand;
-    /**Обчислення та відображення результатів; містить реалізацію статичного методу main()
+    /** Формує та відображає меню програми;
+     * реалізує шаблон Singleton
      * @author Левковська Марія
-     * @version 5.0
-     * @see Main#main
-     */
-public class Main {
-    /**Об'єкт, що реалізує інтерфейс {@linkplain View};
-     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d};
-     * ініціалізується за допомогою Factory Method
-     */
+     * @version 1.0*/
+public class Application{
+    /** Посилання на єдиний екземпляр класу Application;
+     * шаблон Singleton
+     * @see Application*/
+    private static Application instance = new Application();
+     /** Закритий конструктор;
+     * шаблон Singleton
+     * @see Application*/
+    private Application(){}
+    /** Повертає екземпляр класу Application;
+     * шаблон Singleton
+     * @see Application*/
+    public static Application getInstance(){
+        return instance;
+    }
+    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}*/
     private View view = new ViewableTable().getView();
-    /**Об'єкт класу {@linkplain Menu};
-     * макрокоманда (шаблон Command)
-     */
+    /** Об'єкт класу {@linkplain Menu};
+     * макрокоманда (шаблон Command)*/
     private Menu menu = new Menu();
-    /**Обробка команд користувача*/
+    /** Обробка команд користувача
+     * @see Application*/
     public void run(){
+        new java.io.File("items.bin").delete();
         menu.add(new ViewConsoleCommand(view));
         menu.add(new  GenerateConsoleCommand(view));
         ChangeConsoleCommand ccm = new ChangeConsoleCommand(view);
@@ -289,354 +68,468 @@ public class Main {
         menu.add(new UndoConsoleCommand(ccm));
         menu.add(new SaveConsoleCommand (view));
         menu.add(new RestoreConsoleCommand(view));
-        menu.add(new ExecuteConsoleCommand(view));
         menu.execute();
     }
-
-    /**Виконується під час запуску програми
-     * @param args параметри запуску програми
-     */
-    public static void main(String[] args){
-        Main main = new Main();
-        main.run();
-    }
-}
-
-```
-
-## MaxCommand.java
-``` java
-package ex05;
-import java.util.concurrent.TimeUnit;
-import ex02.ViewResult;
-import ex04.Command;
-    /**Задача, що використовується обробником потоку;
-     * шаблон Worker Thread
-     * @author Левковська Марія
-     * @version 1.0
-     * @see Command
-     * @see CommandQueue
-     */
-public class MaxCommand implements Command {
-    /** Зберігає результат обробки колекції */
-    private int result = -1;
-    /** Прапорець готовності результату */
-    private int progress = 0;
-    /** Обслуговує колекцію об'єктів {@linkplain ex01.Item2d} */
-    private ViewResult viewResult;
-    /**Повертає поле {@linkplain MaxCommand#viewResult}
-     * @return значення {@linkplain MaxCommand#viewResult}
-     */
-    public ViewResult getViewResult(){
-        return viewResult;
-    }
-    /**Встановлює поле {@linkplain MaxCommand#viewResult}
-     * @param viewResult значення для {@linkplain MaxCommand#viewResult}
-     * @return нове значення {@linkplain MaxCommand#viewResult}
-     */
-    public ViewResult setViewResult(ViewResult viewResult){
-        return this.viewResult = viewResult;
-    }
-    /**Ініціалізує поле {@linkplain MaxCommand#viewResult}
-     * @param viewResult об'єкт класу {@linkplain ViewResult}
-     */
-    public MaxCommand(ViewResult viewResult){
-        this.viewResult = viewResult;
-    }
-    /**Повертає результат
-     * @return поле {@linkplain MaxCommand#result}
-     */
-    public int getResult(){
-        return result;
-    }
-    /**Перевіряє готовність результату
-     * @return false – якщо результат знайдено, інакше – true
-     * @see MaxCommand#result
-     */
-    public boolean running(){
-        return progress < 100;
-    }
-    /**Використовується обробником потоку {@linkplain CommandQueue};
-     * шаблон Worker Thread
-     */
-    @Override
-    public void execute(){
-        progress = 0;
-        System.out.println("Max execute...");
-        int size = viewResult.getItems().size();
-        result = 0;
-        for(int idx = 1; idx <size; idx++){
-            if(viewResult.getItems().get(result).getY() < viewResult.getItems().get(idx).getY()){
-                result = idx;
-            }
-            progress = idx * 100/ size;
-            if(size >=3 && idx % (size /3)==0){
-                System.out.println("Max " + progress + "%");
-            }
-            try{
-                TimeUnit.MILLISECONDS.sleep(3000/size);
-            }
-            catch(InterruptedException e){
-                System.err.println(e);
-            }
-        }
-        System.out.println(" ~Max positive #" + result + " found: " + "\"" + viewResult.getItems().get(result).getX() + "\"" + " golosni = " + viewResult.getItems().get(result).getY());
-        progress = 100;
-    }
 }
 ```
 
-## MinMaxCommand.java
+## ChangeConsoleCommand.java
+
 ``` java
-package ex05;
-import java.util.concurrent.TimeUnit;
+package ex04;
 import ex01.Item2d;
+import ex01.Calc;
+import ex02.View;
 import ex02.ViewResult;
-import ex04.Command;
-    /**Задача, що використовується обробником потоку;
-     * шаблон Worker Thread
-     * @author Левковська Марія
-     * @version 1.0
-     * @see Command
-     * @see CommandQueue
-     */
-public class MinMaxCommand implements Command{
-    /** Зберігає результат обробки колекції (мінімум) */
-    private int resultMin = -1;
-    /** Зберігає результат обробки колекції (максимум) */
-    private int resultMax = -1;
-    /** Прапорець готовності результату */
-    private int progress = 0;
-    /** Обслуговує колекцію об'єктів {@linkplain ex01.Item2d} */
-    private ViewResult viewResult;
-    /**Повертає поле {@linkplain MinMaxCommand#viewResult}
-     * @return значення {@linkplain MinMaxCommand#viewResult}
-     */
-    public ViewResult getViewResult(){
-        return viewResult;
+        /** Консольна команда
+         * Delete last word;
+         * шаблон Command
+         * @author Левковська Марія
+         * @version 1.0*/
+public class ChangeConsoleCommand extends ChangeItemCommand implements ConsoleCommand{
+    /** Збережене видалене слово для можливості відміни (undo)*/
+    private Item2d deleteLastWord;
+    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію об'єктів {@linkplain ex01.Item2d}*/
+    private View view;
+     /** Повертає поле {@linkplain ChangeConsoleCommand#view}
+     * @return значення {@linkplain ChangeConsoleCommand#view}*/   
+    public View getView(){
+        return view;
     }
-    /**Встановлює поле {@linkplain MinMaxCommand#viewResult}
-     * @param viewResult значення для {@linkplain MinMaxCommand#viewResult}
-     * @return нове значення {@linkplain MinMaxCommand#viewResult}
-     */
-    public ViewResult setViewResult(ViewResult viewResult){
-        return this.viewResult = viewResult;
+    /** Встановлює поле {@linkplain ChangeConsoleCommand#view}
+     * @param view значення для {@linkplain ChangeConsoleCommand#view}
+     * @return нове значення {@linkplain ChangeConsoleCommand#view}*/
+    public View setView(View view){
+        return this.view = view;
     }
-    /**Ініціалізує поле {@linkplain MinMaxCommand#viewResult}
-     * @param viewResult об'єкт класу {@linkplain ViewResult}
-     */
-    public MinMaxCommand(ViewResult viewResult){
-        this.viewResult = viewResult;
+    /** Ініціалізує поле {@linkplain ChangeConsoleCommand#view}
+     * @param view об'єкт, що реалізує інтерфейс {@linkplain View}*/
+    public ChangeConsoleCommand(View view){
+        this.view = view;
     }
-
-    public int getResult(){
-        return resultMin;
+    public char getKey(){
+        return'd';
     }
-    /**Повертає результат мінімального значення
-     * @return поле {@linkplain MinMaxCommand#resultMin}
-     */
-    public int getResultMin(){
-        return resultMin;
+    public String toString(){
+        return "'d'elete(last word)";
     }
-    /**Повертає результат максимального значення
-     * @return поле {@linkplain MinMaxCommand#resultMax}
-     */
-    public int getResultMax(){
-        return resultMax;
+     /** Відміняє останню операцію видалення*/
+     public void undo(){
+        ViewResult vresult = (ViewResult) view;
+        if(deleteLastWord != null){
+            vresult.getItems().add(deleteLastWord);
+        }
+        view.viewShow();
     }
-     /**Перевіряє готовність результату
-     * @return false – якщо результат отримано, інакше – true
-     */
-    public boolean running(){
-        return progress < 100;
-    }
-    /**Використовується обробником потоку {@linkplain CommandQueue};
-     * шаблон Worker Thread
-     */
     public void execute(){
-        progress = 0;
-        System.out.println("MinMax executed...");
-        int idx = 0 , size = viewResult.getItems().size();
-        for(Item2d item : viewResult.getItems()){
-                if((resultMax == -1) || (viewResult.getItems().get(resultMax).getY()< item.getY())){
-                    resultMax = idx;
-                }
-
-                if((resultMin == -1) || (viewResult.getItems().get(resultMin).getY()> item.getY())){
-                    resultMin = idx;
-                }
-            idx++;
-            progress = idx * 100/size;
-            if(size >=5 && idx %(size/5) == 0){
-                System.out.println("MinMax "+ progress + "%");
-            }
-            try{
-                TimeUnit.MILLISECONDS.sleep(5000/size);
-            }
-            catch(InterruptedException e){
-                System.err.println(e);
-            }
+        ViewResult vresult = (ViewResult) view;
+        if(vresult.getItems().size()>0){
+        deleteLastWord = vresult.getItems().remove(vresult.getItems().size()-1);
+        System.out.println("~Delete last word");
         }
-        System.out.print(" ~MinMax doxe. ");
-        if(resultMin > -1){
-            System.out.println("Min positive #" + resultMin + " found: " + "\"" + viewResult.getItems().get(resultMin).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMin).getY());
-        }
-        else{
-            System.out.println(" ~Min positive not found");
-        }
-        if(resultMax > -1){
-            System.out.println("Min positive #" + resultMax + " found: " + "\"" + viewResult.getItems().get(resultMax).getX() + "\"" + " golosni = " + viewResult.getItems().get(resultMax).getY());
-        }
-        else{
-            System.out.println(" ~Max negative not found");
-        }
-        progress = 100;
+       view.viewShow();
     }
 }
 
 ```
 
-## Queue.java
+## ChangeItemCommand.java
+
 ``` java
-package ex05;
-import ex04.Command;
- /**Представляє методи для розміщення та вилучення завдань обробником потоку
-  * шаблон Worker Thread
-  * @author Левковська Марія
-  * @version 1.0
-  * @see Command
-  */
-public interface Queue {
-    /**Додає нове завдання в чергу; 
-     * шаблон Worker Thread
-     * @param cmd завдання*/
-    void put(Command cmd);
-    /**Видаляє завдання з черги; 
-     * шаблон Worker Thread
-     * @return завдання, що видаляється*/
-    Command take();
-    
+package ex04;
+import ex01.Item2d;
+import ex01.Calc;
+    /** Команда обробки елемента;
+     * шаблон Command
+     * використовується для обчислення кількості голосних у рядку
+     * @author Левковська Марія
+     * @version 1.0
+     */
+public class ChangeItemCommand implements Command{
+    /** Оброблюваний об'єкт;
+     * шаблон Command*/
+    private Item2d item;
+    /** Параметр команди*/
+    private double offset;
+    /** Встановлює поле {@linkplain ChangeItemCommand#item}
+     * @param item значення для {@linkplain ChangeItemCommand#item}
+     * @return нове значення {@linkplain ChangeItemCommand#item}*/
+    public Item2d setItem(Item2d item){
+        return this.item = item;
+    }
+    /** Повертає поле {@linkplain ChangeItemCommand#item}
+     * @return значення {@linkplain ChangeItemCommand#item}*/
+    public Item2d getItem(){
+        return item;
+    }
+    public double setOffset(double offset){
+        return this.offset = offset;
+    }
+    public double getOffset(){
+        return offset;
+    }
+    /** Виконує команду;
+     * обчислює кількість голосних у рядку*/
+    public void execute(){
+        String rows = item.getX();
+        item.setY(Calc.calc(rows));
+    }
 }
+
+```
+
+## Command.java
+
+``` java
+package ex04;
+    /** Інтерфейс команди або задачі;
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0
+     */
+public interface Command {
+     /** Виконання команди
+     * шаблон Command*/
+    public void execute();
+}
+
+```
+
+## ConsoleCommand.java
+
+``` java
+package ex04;
+    /** Інтерфейс консольної команди;
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0*/
+public interface ConsoleCommand extends Command {
+     /** Гаряча клавіша команди
+     * @return символ гарячої клавіші*/
+    public char getKey();
+}
+
+```
+
+## GenerateConsoleCommand.java
+
+``` java
+package ex04;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import ex02.View;
+import ex03.ViewTable;
+    /** Консольна команда Enter new row;
+     *  дозволяє вводити новий рядок, щоб підрахувати кількість голосних
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0
+     */
+
+public class GenerateConsoleCommand implements ConsoleCommand{
+    /** Об'єкт, що реалізує інтерфейс {@linkplain View};
+     * обслуговує колекцію {@linkplain ex01.Item2d}*/
+    private View view;
+     /** Ініціалізує поле {@linkplain GenerateConsoleCommand#view}
+     * @param view об'єкт {@linkplain View} */
+    public GenerateConsoleCommand(View view){
+        this.view = view;
+    }
+    public char getKey(){
+        return 'e';
+    }
+    public String toString(){
+        return "'e'nter";
+    }
+    public void execute(){
+        String s = null;
+        System.out.print("~Enter new row: ");     
+         BufferedReader in = new BufferedReader(new InputStreamReader (System.in));   
+          try{
+            s = in.readLine();
+            view.viewInit(s);
+            view.viewShow();
+            }
+            catch(IOException e){
+             System.out.println("~Error: "+ e);
+            }
+    }
+}
+
+```
+
+## Main.java
+
+``` java
+package ex04;
+    /** Запуск програми;
+     * містить реалізацію статичного методу main()
+     * @author Левковська Марія
+     * @version 1.0
+     * @see Main#main */
+public class Main {
+    /** Виконується при запуску програми;
+     * викликає метод {@linkplain Application#run()}
+     * @param args параметри запуску*/
+    public static void main(String[] args){
+        Application app = Application.getInstance();
+        app.run();
+    }
+}
+
+```
+
+## Menu.java
+
+``` java
+package ex04; 
+import java.io.BufferedReader; 
+import java.io.IOException; 
+import java.io.InputStreamReader; 
+import java.util.ArrayList; 
+import ex03.ViewTable;
+import java.util.List; 
+     /** Макрокоманда
+     * (шаблон Command);
+     * контейнер консольних команд
+     * @see ConsoleCommand*/
+public class Menu implements Command{
+    /** Колекція консольних команд
+     * @see ConsoleCommand*/
+    private List<ConsoleCommand> menu = new ArrayList<ConsoleCommand>();
+    ViewTable vtable = new ViewTable();
+    /** Додає нову команду до колекції
+     * @param command реалізує {@linkplain ConsoleCommand}
+     * @return command*/
+    public ConsoleCommand add(ConsoleCommand command){
+        menu.add(command);
+        return command;
+    }
+    public String toString(){
+        System.out.println("\n==========================================================================\n\t\t\tKILKIST GOLOSNIKH");
+        String s = "~Enter command:";
+        for(ConsoleCommand c: menu){
+            s+= c+", ";
+        }
+        s+= "'q'uit: ";
+        return s;
+    }
+
+    public void execute(){
+        String s = null;
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        menu: while(true){
+            do{
+                System.out.print(this);
+                try{
+                    s = in.readLine();
+                    System.out.println("==========================================================================");
+                }
+                catch(IOException e){
+                    System.err.println("~Error: "+ e);
+                    System.exit(0);
+                }
+            } while(s.length()!=1);
+            char key = s.charAt(0);
+            if(key=='q'){
+                System.out.println("~Exit.");
+                vtable.outLine();
+                break menu;
+            }
+            for(ConsoleCommand c: menu){
+                if(s.charAt(0) == c.getKey()){
+                    c.execute();
+                    continue menu;
+                }
+            }
+            System.out.println("~Wrong command.");
+            continue menu;
+        }
+    }
+}
+```
+
+## RestoreConsoleCommand.java
+
+``` java
+package ex04;
+import ex02.View;
+    /** Консольна команда
+     * Restore - відновлює збережені дані
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0 */
+public class RestoreConsoleCommand implements ConsoleCommand{
+    /** Об'єкт {@linkplain View},
+     * що обслуговує колекцію {@linkplain ex01.Item2d}*/
+    private View view;
+    public RestoreConsoleCommand(View view){
+        this.view = view;
+    }
+    public char getKey(){
+        return 'r';
+    }
+    public String toString(){
+        return "'r'estore";
+    }
+    public void execute(){
+        System.out.println("~Restore last saved");
+        try{
+            view.viewRestore();
+        }
+        catch(Exception e){
+            System.err.println("~Serialization error: " + e);
+        }
+        view.viewShow();
+    }
+}
+
+```
+
+## SaveConsoleCommand.java
+
+``` java
+package ex04;
+import java.io.IOException;
+import ex02.View;
+    /** Консольна команда
+     * Save - зберігає поточний стан даних
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0*/
+public class SaveConsoleCommand implements ConsoleCommand{
+     /** Об'єкт {@linkplain View},
+     * що обслуговує колекцію {@linkplain ex01.Item2d}*/
+    private View view;
+    public SaveConsoleCommand(View view){
+        this.view = view;
+    }
+    public char getKey(){
+        return 's';
+    }
+    public String toString(){
+        return "'s'ave";
+    }
+    public void execute(){
+        System.out.println("~Save current.");
+        try{
+            view.viewSave();
+        }
+        catch(IOException e){
+            System.err.println("~Serialization error: " + e );
+        }
+        view.viewShow();
+    }
+}
+
+```
+
+## UndoConsoleCommand.java
+
+``` java
+package ex04;
+import java.io.IOException;
+import ex02.View;
+    /** Консольна команда
+     * Undo - скасовує останню виконану операцію
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0*/
+public class UndoConsoleCommand implements ConsoleCommand{
+    /** Команда, для якої виконується undo*/
+    private ChangeConsoleCommand cmd;
+    public UndoConsoleCommand(ChangeConsoleCommand cmd){
+        this.cmd = cmd;
+    }
+    public char getKey(){
+        return 'u';
+    }
+    public String toString(){
+        return "'u'ndo";
+    }
+    public void execute(){
+        System.out.println("~Undo last action");
+        cmd.undo();
+    }
+}
+
+```
+
+## ViewConsoleCommand.java
+
+``` java
+package ex04;
+import ex02.View;
+import ex02.ViewResult;
+    /** Консольна команда
+     * View - відображає поточні дані
+     * шаблон Command
+     * @author Левковська Марія
+     * @version 1.0*/
+public class ViewConsoleCommand implements ConsoleCommand {
+    /** Об'єкт {@linkplain View},
+     * що обслуговує колекцію {@linkplain ex01.Item2d}*/
+    private View view;
+    public ViewConsoleCommand(View view){
+        this.view = view;
+    }
+    public char getKey(){
+        return 'v';
+    }
+    public String toString(){
+        return "\n'v'iew";
+    }
+    public void execute(){
+       System.out.println("~View current");
+        view.viewShow();
+    }
+}
+
 ```
 
 ## MainTest.java
+
 ``` java
-package ex05;
-import static org.junit.Assert.*;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+package ex04;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import ex01.Item2d;
 import ex02.ViewResult;
-    /**Тестування розроблених класів
-     * @author Левковська Марія
-     * @version 5.0
-     * @see CommandQueue
-     * @see MaxCommand
-     * @see AvgCommand
-     * @see MinMaxCommand
-     */
+import ex01.Calc;
 public class MainTest {
-    /** Кількість слів для тестування */
-    private final static int N = 12;
-    /** Об'єкт для зберігання результатів */
-    private static ViewResult view = new ViewResult();
-    /** Об'єкти команд для тестування */
-    private static MaxCommand max1 = new MaxCommand(view);
-    private static MaxCommand max2 = new MaxCommand(view);
-    private static AvgCommand avg1 = new AvgCommand(view);
-    private static AvgCommand avg2 = new AvgCommand(view);
-    private static MinMaxCommand min1 = new MinMaxCommand(view);
-    private static MinMaxCommand min2 = new MinMaxCommand(view);
-    /** Черга команд (шаблон Worker Thread) */
-    private CommandQueue queue = new CommandQueue();
-
-    /**Виконується перед запуском тестів*/
-    @BeforeClass
-    public static void setUpBeforeClass(){
-        view.viewInit("text for testing my MainTest. Different words just like interesting smart sad");
-        assertEquals(N, view.getItems().size());
-    }
-
-    /**Виконується після завершення всіх тестів*/
-    @AfterClass
-    public static void tearDownAfterClass(){
-        assertEquals(max1.getResult(),max2.getResult());
-        assertEquals(avg1.getResult(),avg2.getResult(), 1e-10);
-        assertEquals(min1.getResultMax(),min2.getResultMax());
-        assertEquals(min1.getResultMin(),min2.getResultMin());
-    }
-    /**Перевірка основної функціональності класу {@linkplain MaxCommand}*/
     @Test
-    public void testMax(){
-        max1.execute();
-        assertTrue(max1.getResult()> -1);
-    }
-    /**Перевірка основної функціональності класу {@linkplain MinMaxCommand}*/
-    @Test
-    public void testMin(){
-        min1.execute();
-        assertTrue(min1.getResultMin()> -1);
-    }
-    /**Перевірка основної функціональності класу {@linkplain AvgCommand}*/
-    @Test
-    public void testAvg(){
-        avg1.execute();
-        assertTrue(avg1.getResult() != 0.0);
-    }
-    /**Перевірка роботи {@linkplain CommandQueue}
-     * з задачею {@linkplain MaxCommand}*/
-    @Test
-    public void testMaxQueue(){
-        queue.put(max2);
-        try{
-            while(max2.running()){
-                TimeUnit.MILLISECONDS.sleep(100);
-            }
-            queue.shutdown();
-            TimeUnit.SECONDS.sleep(1);
-        }
-        catch(InterruptedException e){
-            fail(e.toString());
+    public void testExecute(){
+        ChangeItemCommand cmd = new ChangeItemCommand();
+        cmd.setItem(new Item2d());
+        String rows;
+        for(int ctr = 0; ctr< 10; ctr++){
+            rows="Hello" + ctr;
+            cmd.getItem().setX(rows);
+             cmd.execute();
+          assertEquals(rows, cmd.getItem().getX());
+          assertTrue(cmd.getItem().getY() > 0);
         }
     }
-    /**Перевірка роботи {@linkplain CommandQueue}
-     * з задачею {@linkplain AvgCommand}*/
     @Test
-    public void testAvgQueue(){
-        queue.put(avg2);
-        try{
-            while (avg2.running()) {
-                TimeUnit.MILLISECONDS.sleep(100);
-            }
-            queue.shutdown();
-            TimeUnit.SECONDS.sleep(1);
-        }
-        catch(InterruptedException e){
-            fail(e.toString());
-        }
+    public void testCahngeConsoleCOmmand (){
+        ChangeConsoleCommand cmd = new ChangeConsoleCommand(new ViewResult());
+        cmd.getView().viewInit("");
+        cmd.execute();
+        assertEquals("'d'elete(last word)", cmd.toString());
+        assertEquals('d', cmd.getKey());
     }
-    /**Перевірка роботи {@linkplain CommandQueue}
-     * з задачею {@linkplain MinMaxCommand}*/
-    @Test
-    public void testMinQueue(){
-        queue.put(min2);
-        try{
-            while (min2.running()) {
-                TimeUnit.MILLISECONDS.sleep(100);
-            }
-            queue.shutdown();
-            TimeUnit.SECONDS.sleep(1);
-        }
-        catch(InterruptedException e){
-            fail(e.toString());
-        }
-    }
-
 }
 
 ```
 
 ## 📷Скріншот виконання
-![Приклад1](https://github.com/kachka16/OOP/blob/task-6/PR6/img/priklad1.png?raw=true)
+![Приклад1](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad1.png?raw=true)
+
+![Приклад2](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad2.png?raw=true)
+
+![Приклад3](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad3.png?raw=true)
+
+![Приклад4](https://github.com/kachka16/OOP/blob/task-5/PR5/img/priklad4.png?raw=true)
