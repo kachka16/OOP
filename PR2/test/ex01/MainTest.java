@@ -1,6 +1,7 @@
 package ex01;
 
 import org.junit.Test;
+import ex01.Calc;
 import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import junit.framework.Assert;
